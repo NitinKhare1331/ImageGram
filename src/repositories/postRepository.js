@@ -6,7 +6,6 @@ export const createPost = async (caption, image, user) => {
         // await newPost.save();
         const newPost = await Post.create({ caption, image, user });
         return newPost;
-        
     }
     catch(error) {
         console.log(error);

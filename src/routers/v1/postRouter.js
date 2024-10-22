@@ -3,13 +3,15 @@
 
 import express from 'express';
 import { s3uploader } from '../../config/multerConfig.js';
-import { createPost, deletePost, getAllPosts } from "../../controllers/postController.js";
+import { createPost, deletePost, getAllPosts, updatePost } from "../../controllers/postController.js";
 
 const router = express.Router();
 
 router.post('/', s3uploader.single('image'), createPost);
 
-router.get('/', getAllPosts)
+router.get('/', getAllPosts);
+
+router.put('/:id', s3uploader.single('image'), updatePost);
 
 router.delete('/:id', deletePost);
 

@@ -1,7 +1,6 @@
 import express from "express";
 import connectDB from "./config/dbConfig.js";
-import { createPost } from "./controllers/postController.js";
-import { s3uploader } from "./config/multerConfig.js";
+import apiRouter from './routers/apiRouter.js';
 
 const PORT = 5000;
 
@@ -11,6 +10,8 @@ app.use(express.json()); //middleware to parse json data(serializer, deserialize
 app.use(express.text()); //deserialization of text, json, urlencoded
 app.use(express.urlencoded({ extended: true })); //app.use is global mddleware
 
+app.use('/api', apiRouter);
+
 
 app.get('/ping', (req, res) => {
     // const name = req.params.name; //req params -> { name:'value', id:2 }
@@ -19,7 +20,6 @@ app.get('/ping', (req, res) => {
     return res.json({message: "pong"});
 });
 
-app.post('/posts', s3uploader.single('image'), createPost); //routing layer
 
 app.listen( PORT, () => {
     console.log(`Server is running on ${PORT}`);

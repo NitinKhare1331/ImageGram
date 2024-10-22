@@ -1,10 +1,13 @@
 import express from "express";
 import connectDB from "./config/dbConfig.js";
 import apiRouter from './routers/apiRouter.js';
+import multer from "multer";
 
 const PORT = 5000;
 
 const app = express();
+
+const upload = multer();
 
 app.use(express.json()); //middleware to parse json data(serializer, deserializer)
 app.use(express.text()); //deserialization of text, json, urlencoded

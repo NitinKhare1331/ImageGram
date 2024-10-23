@@ -1,6 +1,9 @@
 import { createPostService, deletePostService, getAllPostsService, updatePostService } from "../services/postService.js";
 
 export async function createPost(req, res) {
+    const userDetails = req.user;
+    console.log(userDetails);
+    
     console.log(req.file);
     //call the service layer
 
@@ -13,7 +16,8 @@ export async function createPost(req, res) {
 
     const post = await createPostService({
         caption: req.body.caption,
-        image: req.file.location
+        image: req.file.location,
+        user: userDetails._id
     });
 
     return res.json({

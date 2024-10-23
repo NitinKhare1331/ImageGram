@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import bcrypt from "bcrypt";
 
 const userSchema = new mongoose.Schema({
     username: {
@@ -11,21 +12,43 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
         unique: true,
-        minLength: 5,
+        minLength: 6,
         validate: {
-            validator: function(emailValue){
+            validator: function (emailValue) {
                 return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(emailValue);
             },
             message: 'Invalid email format'
-        }
+        },
+        
+    },
+    role: {
+        type: String,
+        default: "user",
+        enum: ["user", "admin"]
     },
     password: {
         type: String,
         required: true,
-        minLength: 8
+        minLength: 5
     }
 }, { timestamps: true }); //created_at an updated_at always created when a user is created
 
-const user = mongoose.model("User", userSchema);
+userSchema.pre('save', function modifyPassword(next) {
+    // incoming user object
+    const user = this; // object with plain password
+
+    const SALT = bcrypt.genSaltSync(9);
+
+    // hash password
+
+    const hashedPassword = bcrypt.hashSync(user.password, SALT);
+
+    // replace plain password with hashed password
+    user.password = hashedPassword;
+
+    next();
+});
+
+const user = mongoose.model("User", userSchema); // user collection
 
 export default user;

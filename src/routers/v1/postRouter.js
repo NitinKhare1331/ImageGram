@@ -16,6 +16,6 @@ router.get('/', getAllPosts);
 
 router.put('/:id', s3uploader.single('image'), updatePost);
 
-router.delete('/:id', deletePost);
+router.delete('/:id', isAuthenticated, deletePost);
 
 export default router;

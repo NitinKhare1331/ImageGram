@@ -74,7 +74,7 @@ export async function updatePost(req, res) {
 export async function deletePost(req, res) {
     try {
         const postId = req.params.id;
-        const response = await deletePostService(postId);
+        const response = await deletePostService(postId, req.user._id);
         if(!response){
             return res.status(404).json({
                 succcess: false,
@@ -88,6 +88,12 @@ export async function deletePost(req, res) {
         })
     } catch (error) {
         console.log(error);
+        if(error.status) {
+            return res.status(error.status).json({
+                success: false,
+                message: 'Internal server error'
+            });
+        }
         return res.status(500).json({
             success: false,
             message: 'Internal server error'

@@ -10,6 +10,15 @@ import { isAdmin, isAuthenticated } from '../../middlewares/authMiddleware.js'
 
 const router = express.Router();
 
+/**
+ * @swagger
+ * /posts:
+ *  post:
+ *      summary: Create a new post
+ *      description: Create a new post which requires jwt token, image, caption
+ * 
+ */
+
 router.post('/', isAuthenticated, s3uploader.single('image'), validate(zodPostSchema), createPost);
 
 router.get('/', getAllPosts);

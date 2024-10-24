@@ -1,18 +1,21 @@
 import express from "express";
 import connectDB from "./config/dbConfig.js";
 import apiRouter from './routers/apiRouter.js';
-import multer from "multer";
 import { isAuthenticated } from "./middlewares/authMiddleware.js";
+import { options } from "./util/swaggerOptions.js";
+import swaggerJSDoc from "swagger-jsdoc";
+import swaggerUi from 'swagger-ui-express';
 
 const PORT = 5000;
 
 const app = express();
 
-const upload = multer();
-
 app.use(express.json()); //middleware to parse json data(serializer, deserializer)
 app.use(express.text()); //deserialization of text, json, urlencoded
 app.use(express.urlencoded({ extended: true })); //app.use is global mddleware
+
+const swaggerDocs = swaggerJSDoc(options);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 app.use('/api', apiRouter);
 

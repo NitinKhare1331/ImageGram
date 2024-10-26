@@ -7,6 +7,7 @@ import { createPost, deletePost, getAllPosts, updatePost } from "../../controlle
 import { validate } from '../../validators/zodValidator.js';
 import { zodPostSchema } from '../../validators/zodPostSchema.js';
 import { isAdmin, isAuthenticated } from '../../middlewares/authMiddleware.js'
+import { createComment } from '../../controllers/commentsController.js';
 
 const router = express.Router();
 
@@ -26,5 +27,7 @@ router.get('/', getAllPosts);
 router.put('/:id', isAuthenticated, isAdmin, s3uploader.single('image'), updatePost);
 
 router.delete('/:id', isAuthenticated, deletePost);
+
+router.post('/:id', isAuthenticated, createComment);
 
 export default router;

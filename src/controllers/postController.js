@@ -2,9 +2,10 @@ import { createPostService, deletePostService, getAllPostsService, updatePostSer
 
 export async function createPost(req, res) {
     const userDetails = req.user;
-    console.log(userDetails);
+    console.log("user details : ", userDetails);
     
     console.log(req.file);
+
     //call the service layer
 
     if(!req.file || !req.file.location){
